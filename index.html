@@ -20,6 +20,12 @@ select,input{background:var(--card);color:var(--tx)}button.g{background:var(--go
 .bar{height:8px;background:#0002;border-radius:5px;overflow:hidden}.bar i{display:block;height:100%;background:var(--gold)}
 .note{font-size:12px;opacity:.75}.row{display:flex;flex-wrap:wrap;align-items:center}.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.cal i{aspect-ratio:1;border-radius:4px;background:#0002}.cal i.d{background:var(--em)}
 #toast{position:fixed;top:10px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:8px 14px;border-radius:9px;z-index:20;display:none}
+.card{border-top:3px solid var(--gold)}button{cursor:pointer}button.b{box-shadow:0 2px 6px #0b5d4655}
+#hd{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,var(--em),var(--em2));color:var(--gold);padding:14px 18px;border-radius:16px;margin-bottom:10px;font-size:19px;box-shadow:0 3px 10px #0004}#hd span{font-size:13px;color:#fff}
+.pgtop{display:flex;justify-content:space-between;padding:4px 8px;color:var(--em)}.dark .pgtop{color:var(--gold)}.pgwrap{display:flex;gap:6px;align-items:stretch}.pgwrap .pg{flex:1}
+.arr{width:46px;border:0;border-radius:12px;background:var(--em);color:var(--gold);font-size:34px}.sl{width:100%;padding:0;accent-color:var(--gold);background:none;border:0}
+.ay.mem{background:#0b5d4618;border-radius:6px}.sub{color:#c22;font-weight:700;background:#c2222222;border-radius:4px}
+nav button{font-size:12px}@media(min-width:900px){nav button{font-size:16px}}
 </style></head><body><main id="app">Loading…</main><nav id="nav"></nav><div id="toast"></div>
 <script>
 const $=s=>document.querySelector(s),AD=n=>String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
@@ -80,11 +86,11 @@ au.onended=()=>{rc++;if(S.pref.rep==0||rc<S.pref.rep)go();else{rc=0;qi++;go()}};
 au.onerror=()=>toast('Could not load audio (check internet).');
 const playOne=i=>play([i]),skip=()=>{rc=0;qi++;go()};
 /* ---------- views ---------- */
-const TABS=[['home','Home'],['reader','Reader'],['hifz','Hifz'],['rev','Revision'],['test','Test'],['audio','Audio'],['prog','Progress'],['set','Settings']];
+const TABS=[['home','🏠 Home'],['reader','📖 Quran'],['hifz','🧠 Hifz'],['rev','🔁 Revise'],['test','🎯 Test'],['audio','🎧 Audio'],['prog','📈 Progress'],['set','⚙️ Settings']];
 function go2(t){tab=t;render()}
 function render(){document.documentElement.classList.toggle('dark',S.pref.theme=='dark');
  $('#nav').innerHTML=TABS.map(([k,l])=>`<button class="${k==tab?'on':''}" onclick="go2('${k}')">${l}</button>`).join('');
- $('#app').innerHTML=({home:vHome,reader:vReader,hifz:vHifz,rev:vRev,test:vTest,audio:vAudio,prog:vProg,set:vSet})[tab]()}
+ $('#app').innerHTML=`<div id=hd><b>﷽ Quran Hifz Master</b><span>Level ${level()} · ${total()} XP · 🔥 ${S.streak}</span></div>`+({home:vHome,reader:vReader,hifz:vHifz,rev:vRev,test:vTest,audio:vAudio,prog:vProg,set:vSet})[tab]()}
 const rng=(a,b)=>`${SS[Q[a].s-1].en} ${Q[a].s}:${Q[a].a} → ${Q[b-1].s}:${Q[b-1].a}`;
 function dueList(){const t=today();return S.log.slice(0,-1).filter(e=>e.next<=t)}
 function vHome(){const c=cur(),back=Date.now()-S.lastBackup>7*864e5;
@@ -94,25 +100,32 @@ function vHome(){const c=cur(),back=Date.now()-S.lastBackup>7*864e5;
  Previous Sabaq: ${S.log.length?(S.prevDone[today()]?'✅':'pending'):'—'}<br>Old revision due: ${dueList().length} <button class=o onclick="go2('rev')">Open</button><br>Random test: ${S.pos?'<button class=o onclick="go2(\'test\')">Start</button>':'after your first sabaq'}</div>`}
 /* Reader */
 let zoom=1;
-function vReader(){const L=PG[S.page]||[],p=S.pref;
+let jm=false,tx=0;
+function vReader(){const L=PG[S.page]||[],p=S.pref,bm=S.bm.includes(S.page);
  const body=L.map(a=>{let h='';if(a.a==1)h+=`<div class=sh>${SS[a.s-1].ar} · ${SS[a.s-1].en}</div>`+(a.s!=1&&a.s!=9?'<div class="bs ar">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</div>':'');
-  return h+`<span class=ay data-n=${a.n} onclick="playOne(${a.n-1})">${a.ar} <span class=mk>﴿${AD(a.a)}﴾</span></span> `}).join('');
+  return h+`<span class="ay ${a.n<=S.pos?'mem':''}" data-n=${a.n} onclick="playOne(${a.n-1})">${a.ar} <span class=mk>﴿${AD(a.a)}﴾</span></span> `}).join('');
  const sub=L.map(a=>`<p class=note style="font-size:14px"><b>${a.s}:${a.a}</b> ${p.rom?`<i>${a.tr}</i> `:''}${p.tl?a.en:''}</p>`).join('');
- const bm=S.bm.includes(S.page);
- return `<div class=row><button class=b onclick=pgGo(1)>◀ Prev</button><b style="flex:1;text-align:center">Page ${S.page}/604 · Juz ${L[0]?.j||''}</b><button class=b onclick=pgGo(-1)>Next ▶</button></div>
+ const panel=jm?`<div class=card><select id=js onchange="gS(this.value)"><option>Surah…</option>${SS.map(s=>`<option value=${s.n}>${s.n}. ${s.en} — ${s.ar}</option>`).join('')}</select>
+ <select onchange="gJ(this.value)"><option>Para…</option>${[...Array(30)].map((_,i)=>`<option>${i+1}</option>`).join('')}</select>
+ <input id=ga placeholder="Ayah" style="width:70px" type=number><button class=b onclick="gA()">Go</button><br>
+ <input id=sq placeholder="Search Arabic / Roman / English"><button class=b onclick="srch()">Search</button><div id=sr></div>
+ ${S.bm.length?'<p>Bookmarks: '+S.bm.map(b=>`<button class=o onclick="S.page=${b};render()">${b}</button>`).join('')+'</p>':''}</div>`:'';
+ return `<div class=pgtop><span>Para ${L[0]?.j||''}</span><b>Page <span id=pn>${S.page}</span> / 604</b><span>${L[0]?SS[L[0].s-1].en:''}</span></div>
+ <div class=pgwrap><button class=arr onclick="pgGo(1)">‹</button>
  <div class=pg id=pg style="font-size:${p.size*zoom}px" ontouchstart="tx=event.touches[0].clientX" ontouchend="sw(event)"><div class=ar>${body}</div></div>
+ <button class=arr onclick="pgGo(-1)">›</button></div>
+ <input type=range class=sl min=1 max=604 value=${S.page} oninput="$('#pn').textContent=this.value" onchange="S.page=+this.value;save();render()">
+ <div class=note>Green-tinted ayahs = tumhare yaad kiye hue. Swipe right ya ‹ = agla page.</div>
+ <div class=row><button class=g onclick="play(PG[S.page].map(a=>a.n-1))">▶ Page suno</button><span id=np class=note></span>
+ <button class=o onclick="open2(cur().from)">📍 Aaj ka sabaq</button><button class=o onclick="open2(Math.max(0,S.pos-1))">✅ Last yaad</button>
+ <button class=o onclick="bmk()">${bm?'★ Saved':'☆ Bookmark'}</button><button class=o onclick="jm=!jm;render()">🔎 Jump/Search</button></div>
  <div class=row><button class=o onclick="zoom=Math.min(2,zoom+.1);render()">A+</button><button class=o onclick="zoom=Math.max(.6,zoom-.1);render()">A−</button>
  <button class=o onclick="tg('rom')">Roman ${p.rom?'✓':''}</button><button class=o onclick="tg('tl')">Translation ${p.tl?'✓':''}</button>
- <button class=o onclick="S.pref.theme=S.pref.theme=='dark'?'light':'dark';save();render()">Theme</button><button class=o onclick="document.documentElement.requestFullscreen?.()">Fullscreen</button>
- <button class=o onclick="bmk()">${bm?'★ Bookmarked':'☆ Bookmark'}</button><button class=g onclick="play(PG[S.page].map(a=>a.n-1))">▶ Page</button><span id=np class=note></span></div>
- <div class=card>${sub}</div>
- <div class=card><select id=js onchange="gS(this.value)"><option>Surah…</option>${SS.map(s=>`<option value=${s.n}>${s.n}. ${s.en} — ${s.ar}</option>`).join('')}</select>
- <select onchange="gJ(this.value)"><option>Para…</option>${[...Array(30)].map((_,i)=>`<option>${i+1}</option>`).join('')}</select>
- <input id=ga placeholder="Ayah" style="width:70px" type=number><button class=b onclick="gA()">Go</button>
- <input id=sq placeholder="Search Arabic / Roman / English"><button class=b onclick="srch()">Search</button><div id=sr></div>
- ${S.bm.length?'<p>Bookmarks: '+S.bm.map(b=>`<button class=o onclick="S.page=${b};render()">${b}</button>`).join('')+'</p>':''}</div>`}
-let tx=0;const sw=e=>{const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>60)pgGo(d>0?-1:1)}; /* swipe right = next (right-to-left book) */
-function pgGo(d){const n=S.page-d;if(n<1||n>604)return;S.page=n;save();render();const e=$('#pg');e.classList.add('flip')}
+ <button class=o onclick="S.pref.theme=S.pref.theme=='dark'?'light':'dark';save();render()">🌙 Theme</button><button class=o onclick="document.documentElement.requestFullscreen?.()">⛶</button></div>
+ ${panel}<div class=card>${sub}</div>`}
+const sw=e=>{const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>60)pgGo(d>0?1:-1)};
+function pgGo(d){const n=S.page+d;if(n<1||n>604)return;S.page=n;save();render();$('#pg').classList.add('flip')}
+const open2=i=>{S.page=Q[i].p;save();go2('reader')};
 const tg=k=>{S.pref[k]=!S.pref[k];save();render()};
 const bmk=()=>{const i=S.bm.indexOf(S.page);i<0?S.bm.push(S.page):S.bm.splice(i,1);save();render()};
 const jump=i=>{S.page=Q[i].p;save();render()};
@@ -124,13 +137,34 @@ function srch(){const t=$('#sq').value.trim().toLowerCase();if(!t)return;const n
 function cur(){const t=today();if(!S.cur||S.cur.date!=t)S.cur={date:t,from:S.pos,to:Math.min(S.pos+S.pref.target,Q.length),done:false};return S.cur}
 let hid=false;
 function ayBlock(f,t,showTr){let h='';for(let i=f;i<t;i++){const a=Q[i];h+=`<div class="${hid?'hide':''}"><span class="ay ar" data-n=${a.n} style="font-size:${S.pref.size}px">${a.ar} <span class=mk>﴿${AD(a.a)}﴾</span></span> <button class=o onclick="recite(${i})">🎤</button><button class=o onclick="playOne(${i})">▶</button>${showTr?`<div class=note><i>${a.tr}</i><br>${a.en}</div>`:''}</div>`}return h}
-function vHifz(){const c=cur(),prev=S.log.length?S.log[S.log.length-1]:null;
- return `<h2>Hifz</h2><div class=card><h3>A. New Sabaq — ${rng(c.from,c.to)}</h3>
- ${c.done?'<p>✅ Completed today.</p>':''}${ayBlock(c.from,c.to,S.pref.rom||S.pref.tl)}
- <button class=g onclick="play([...Array(${c.to-c.from})].map((_,i)=>${c.from}+i))">▶ Listen all</button><button class=o onclick="hid=!hid;render()">${hid?'Show':'Hide'} text (recite from memory)</button><button class=o onclick=skip()>Next ayah ⏭</button><button class=o onclick="au.pause()">Pause</button><button class=o onclick="au.play()">Resume</button><span id=np class=note></span>
- <div id=res class=card></div>
- ${c.done?'':`<label><input type=checkbox id=tv style="width:auto"> A teacher verified my recitation</label><br><button class=b onclick=finish()>Mark sabaq complete</button><p class=note>Self-reported = 10 XP. Verified (teacher or ≥90% mic match on every ayah) = 50 XP.</p>`}</div>
- <div class=card><h3>B. Previous Sabaq</h3>${prev&&prev.date!=today()?`${rng(prev.from,prev.to)}<br>${S.prevDone[today()]?'✅ Revised':`<button class=b onclick="prevDone()">I recited it again (+20 self-reported)</button> <button class=o onclick="play([...Array(${prev.to-prev.from})].map((_,i)=>${prev.from}+i))">▶</button>`}`:'Nothing yet — finish a sabaq first.'}</div>`}
+const SRok=!!(window.SpeechRecognition||window.webkitSpeechRecognition);
+function lev(a,b){const m=a.length,n=b.length,d=Array.from({length:m+1},(_,i)=>[i,...Array(n).fill(0)]);for(let j=1;j<=n;j++)d[0][j]=j;for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]==b[j-1]?0:1));return d[m][n]}
+let RR=null;
+function startRange(f,t){const R=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!R)return toast('Is browser me speech recognition nahi hai. Safari me site kholo.');
+ if(RR){RR.stop();return}
+ const r=new R();RR=r;r.lang=S.pref.lang;r.continuous=true;r.interimResults=true;let fin='';
+ r.onresult=e=>{let tmp='';for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)fin+=' '+e.results[i][0].transcript;else tmp+=e.results[i][0].transcript}$('#live').textContent='Sun raha hoon: '+fin+' '+tmp};
+ r.onerror=e=>toast('Mic error: '+e.error);
+ r.onend=()=>{RR=null;const m=$('#mic');m&&(m.textContent='🎤 Poora sabaq sunao');if(fin.trim())rangeRes(f,t,fin.trim());else toast('Kuch sunai nahi diya')};
+ try{r.start();$('#mic').textContent='⏹ Ruko, result dekho'}catch(e){RR=null;toast('Mic start nahi hua: '+e.message)}}
+function rangeRes(f,t,heard){const ref=[],own=[];for(let i=f;i<t;i++)norm(Q[i].ar).split(' ').forEach(w=>{ref.push(w);own.push(i)});
+ const h=norm(heard).split(' ').filter(Boolean),d=diff(ref,h),per={};let p=0;for(let i=f;i<t;i++)per[i]=[];
+ d.forEach(([k,w])=>{if(k=='extra')per[own[Math.min(p,ref.length-1)]].push({k,w});else{per[own[p]].push({k,w});p++}});
+ let html='';
+ for(let i=f;i<t;i++){const tk=[];per[i].forEach(x=>{const l=tk[tk.length-1];if(l&&((l.k=='miss'&&x.k=='extra')||(l.k=='extra'&&x.k=='miss'))&&lev(l.w,x.w)<=3){const m=l.k=='miss'?l.w:x.w,e=l.k=='miss'?x.w:l.w;tk[tk.length-1]={k:'sub',w:m,e}}else tk.push(x)});
+  const n=norm(Q[i].ar).split(' ').length,ok=tk.filter(x=>x.k=='ok').length,perfect=tk.every(x=>x.k=='ok');if(perfect)S.ver[Q[i].n]=1;
+  html+=`<div class=card><b>${Q[i].s}:${Q[i].a}</b> — ${perfect?'✅ sab shabd match':Math.round(ok/n*100)+'% match'}<div class=ar style="font-size:26px">${tk.map(x=>x.k=='sub'?`<span class=sub>${x.w}</span><small class=extra>(suna: ${x.e})</small>`:`<span class=${x.k}>${x.w}</span>`).join(' ')}</div><div class=ar style="font-size:${S.pref.size}px">${Q[i].ar}</div></div>`}
+ save();$('#res').innerHTML=`<p><b>Tumne padha:</b> ${heard}</p>${html}<p class=note><span class=ok>hara</span> = sahi · <span class=miss>kata hua</span> = chhoota · <span class=sub>laal</span> = badla hua shabd (bracket me jo suna gaya) · <span class=extra>peela</span> = extra/dohraya.<br>⚠️ Ye sirf speech-to-text se shabd milana hai. Arabic recognition kabhi galat bhi sun sakta hai, aur Tajweed ki jaanch nahi karta. Pakka karne ke liye ustaad se sunwao.</p>`}
+function vHifz(){const c=cur(),prev=S.log.length?S.log[S.log.length-1]:null,np=c.from==0||Q[c.from].j!=Q[c.from-1].j;
+ return `<div class=card style="background:linear-gradient(135deg,var(--em),var(--em2));color:#fff"><h3 style="color:var(--gold);margin:0">${np?'🌙 Naya Para '+Q[c.from].j+' shuru!':'Aaj ka Sabaq'}</h3>${rng(c.from,c.to)}${c.done?' · ✅ complete':''}</div>
+ ${SRok?'':'<div class=card>⚠️ Is browser (iPad Chrome) me mic se recognition support nahi. Safari me site kholo; Settings → General → Keyboard → Enable Dictation aur Arabic keyboard jodo.</div>'}
+ <div class=card>${ayBlock(c.from,c.to,S.pref.rom||S.pref.tl)}
+ <div class=row><button class=g onclick="play([...Array(${c.to-c.from})].map((_,i)=>${c.from}+i))">▶ Suno</button><button class=o onclick="hid=!hid;render()">${hid?'👁 Dikhao':'🙈 Chhupao'}</button><button class=o onclick=skip()>⏭</button><button class=o onclick="au.pause()">⏸</button><button class=o onclick="au.play()">▶</button><button class=o onclick="open2(${c.from})">📖 Page</button></div>
+ <div class=row><button class=b id=mic style="flex:1;font-size:18px;padding:14px" onclick="startRange(${c.from},${c.to})">🎤 Poora sabaq sunao</button></div><span id=np class=note></span>
+ <div id=live class=note></div><div id=res></div>
+ ${c.done?'':`<label><input type=checkbox id=tv style="width:auto"> Ustaad ne sunkar verify kiya</label><br><button class=b onclick=finish()>Sabaq complete karo</button><p class=note>Self-reported = 10 XP. Verified (ustaad ya har shabd mic se match) = 50 XP.</p>`}</div>
+ <div class=card><h3>Pichhla Sabaq</h3>${prev&&prev.date!=today()?`${rng(prev.from,prev.to)}<br>${S.prevDone[today()]?'✅ Revised':`<button class=b onclick="prevDone()">Dobara sunaya (+20 self-reported)</button> <button class=o onclick="play([...Array(${prev.to-prev.from})].map((_,i)=>${prev.from}+i))">▶</button> <button class=o onclick="open2(${prev.from})">📖 Page</button>`}`:'Abhi nahi — pehle sabaq complete karo.'}</div>`}
 function finish(){const c=cur(),v=$('#tv').checked||[...Array(c.to-c.from)].every((_,i)=>S.ver[Q[c.from+i].n]);
  c.done=true;S.log.push({date:c.date,from:c.from,to:c.to,ver:v,step:0,next:addDays(c.date,1)});S.pos=c.to;
  if(S.last!=c.date){S.streak=S.last==addDays(c.date,-1)?S.streak+1:1;S.last=c.date;if(S.streak%7==0){xp('self',100);toast('7-day streak! +100 XP')}}
@@ -138,7 +172,7 @@ function finish(){const c=cur(),v=$('#tv').checked||[...Array(c.to-c.from)].ever
 function prevDone(){S.prevDone[today()]=1;xp('self',20);render()}
 /* Revision */
 function vRev(){const d=dueList(),weak=Object.keys(S.weak);
- return `<h2>Old Revision</h2><div class=card>Schedule intervals: 1, 3, 7, 14, 30, 60 days.</div>${d.length?d.map((e,k)=>`<div class=card>${rng(e.from,e.to)} <span class=note>(${e.date})</span><br><button class=o onclick="play([...Array(${e.to-e.from})].map((_,i)=>${e.from}+i))">▶ Listen</button><button class=b onclick="revDone(${S.log.indexOf(e)},1)">Recited — strong</button><button class=g onclick="revDone(${S.log.indexOf(e)},0)">Weak</button></div>`).join(''):'<div class=card>Nothing due today 🎉</div>'}
+ return `<h2>Old Revision</h2><div class=card>Schedule intervals: 1, 3, 7, 14, 30, 60 days.</div>${d.length?d.map((e,k)=>`<div class=card>${rng(e.from,e.to)} <span class=note>(${e.date})</span><br><button class=o onclick="play([...Array(${e.to-e.from})].map((_,i)=>${e.from}+i))">▶ Listen</button><button class=o onclick="open2(${e.from})">📖 Page</button><button class=b onclick="revDone(${S.log.indexOf(e)},1)">Recited — strong</button><button class=g onclick="revDone(${S.log.indexOf(e)},0)">Weak</button></div>`).join(''):'<div class=card>Nothing due today 🎉</div>'}
  <div class=card><h3>Weak ayahs (${weak.length})</h3>${weak.slice(0,30).map(n=>`${Q[n-1].s}:${Q[n-1].a}`).join(', ')||'None'}</div>`}
 const IV=[1,3,7,14,30,60];
 function revDone(i,ok){const e=S.log[i];if(ok){e.step=Math.min(e.step+1,5);for(let k=e.from;k<e.to;k++)delete S.weak[Q[k].n]}else{e.step=0;for(let k=e.from;k<e.to;k++)S.weak[Q[k].n]=1}
