@@ -1,0 +1,241 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0b5d46"><meta name="apple-mobile-web-app-capable" content="yes"><link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet"><title>Quran Hifz Master</title>
+<style>
+:root{--em:#0b5d46;--em2:#08402f;--gold:#c9a24b;--bg:#f3efe2;--page:#fbf6e6;--tx:#1d2a24;--card:#fff}
+:root.dark{--bg:#0e1311;--page:#171d1a;--tx:#e8e4d4;--card:#1d2522}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px -apple-system,system-ui,sans-serif;padding-bottom:70px}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--em2);z-index:9;padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;background:none;border:0;color:#cfe;padding:10px 2px;font-size:11px}nav button.on{color:var(--gold);font-weight:700}
+main{max-width:900px;margin:auto;padding:14px}
+@media(min-width:900px){body{padding:0 0 0 180px}nav{top:0;right:auto;width:180px;flex-direction:column;padding-top:20px}nav button{text-align:left;padding:14px 18px;font-size:15px}}
+.card{background:var(--card);border-radius:14px;padding:14px;margin:10px 0;border:1px solid #0001;box-shadow:0 2px 8px #0001}
+h2,h3{color:var(--em)}.dark h2,.dark h3{color:var(--gold)}
+button.b,select,input{padding:9px 13px;border-radius:9px;border:1px solid var(--em);background:var(--em);color:#fff;font-size:15px;margin:3px}
+select,input{background:var(--card);color:var(--tx)}button.g{background:var(--gold);border-color:var(--gold);color:#222}button.o{background:none;color:var(--em)}.dark button.o{color:var(--gold)}
+.ar{font-family:"KFGQPC Uthmanic Script HAFS","Amiri Quran","Scheherazade New","Geeza Pro",serif;direction:rtl;line-height:2.1;text-align:justify}
+.pg{background:var(--page);border:2px solid var(--gold);border-radius:6px;padding:18px 22px;min-height:60vh;box-shadow:inset 0 0 30px #c9a24b33;transform-origin:left center}
+.sh{text-align:center;background:var(--em);color:var(--gold);border-radius:6px;margin:8px 0;padding:4px;font-family:serif}.bs{text-align:center;font-size:1.1em;font-family:serif}
+.ay.on{background:#c9a24b55;border-radius:6px}.mk{color:var(--gold);font-size:.8em}.hide .ay{filter:blur(12px)}
+@keyframes fl{from{transform:perspective(900px) rotateY(-70deg);opacity:.2}to{transform:none;opacity:1}}.flip{animation:fl .45s ease}
+.ok{color:#0a7d3b}.miss{color:#c22;text-decoration:line-through}.extra{color:#d80;text-decoration:underline}
+.bar{height:8px;background:#0002;border-radius:5px;overflow:hidden}.bar i{display:block;height:100%;background:var(--gold)}
+.note{font-size:12px;opacity:.75}.row{display:flex;flex-wrap:wrap;align-items:center}.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.cal i{aspect-ratio:1;border-radius:4px;background:#0002}.cal i.d{background:var(--em)}
+#toast{position:fixed;top:10px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:8px 14px;border-radius:9px;z-index:20;display:none}
+.card{border-top:3px solid var(--gold)}button{cursor:pointer}button.b{box-shadow:0 2px 6px #0b5d4655}
+#hd{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,var(--em),var(--em2));color:var(--gold);padding:14px 18px;border-radius:16px;margin-bottom:10px;font-size:19px;box-shadow:0 3px 10px #0004}#hd span{font-size:13px;color:#fff}
+.pgtop{display:flex;justify-content:space-between;padding:4px 8px;color:var(--em)}.dark .pgtop{color:var(--gold)}.pgwrap{display:flex;gap:6px;align-items:stretch}.pgwrap .pg{flex:1}
+.arr{width:46px;border:0;border-radius:12px;background:var(--em);color:var(--gold);font-size:34px}.sl{width:100%;padding:0;accent-color:var(--gold);background:none;border:0}
+.ay.mem{background:#0b5d4618;border-radius:6px}.sub{color:#c22;font-weight:700;background:#c2222222;border-radius:4px}
+nav button{font-size:12px}@media(min-width:900px){nav button{font-size:16px}}
+
+:root{--paper2:#fffdf3}:root.dark{--paper2:#1f2824}
+body{font-family:Cairo,-apple-system,system-ui,sans-serif;padding-bottom:110px}
+@keyframes up{from{opacity:0;transform:translateY(10px)}}#app>*{animation:up .35s both}
+.card{border-radius:18px;box-shadow:0 4px 16px #0001}button{transition:transform .1s}button:active{transform:scale(.95)}
+button.b,button.g{border-radius:999px;padding:10px 20px;font-weight:600}button.o{border:1px solid #c9a24b88;border-radius:999px}
+.pg{background:radial-gradient(circle at 50% 0,var(--paper2),var(--page));border:3px double var(--gold);outline:1px solid #c9a24b88;outline-offset:-9px;border-radius:12px;box-shadow:0 12px 30px #0003,inset 0 0 40px #c9a24b22;padding:26px 28px}
+.mk{display:inline-grid;place-items:center;min-width:1.9em;height:1.9em;border:1.5px solid var(--gold);border-radius:50%;font-size:.5em;line-height:1;color:var(--gold);margin:0 .25em;vertical-align:middle;font-family:"Amiri Quran",serif}
+.ay.on{background:#c9a24b66;box-shadow:0 0 0 3px #c9a24b44}
+.hero{display:flex;gap:18px;align-items:center;background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;border-radius:24px;padding:20px;margin:10px 0;box-shadow:0 8px 24px #0b5d4655}
+.ring{flex:none;width:110px;height:110px;border-radius:50%;background:conic-gradient(var(--gold) calc(var(--p)*1%),#ffffff30 0);display:grid;place-items:center}.ring b{width:84px;height:84px;border-radius:50%;background:var(--em2);display:grid;place-items:center;font-size:20px;color:#fff}
+.task{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #0001}.task:last-child{border:0}.task small{opacity:.7}
+nav button{display:flex;flex-direction:column;align-items:center;gap:2px}nav .ic{font-size:20px}nav small{font-size:10px}nav button.on{background:#ffffff1a;border-radius:16px}
+@media(max-width:899px){nav{left:10px;right:10px;bottom:calc(8px + env(safe-area-inset-bottom));border-radius:24px;padding:4px;box-shadow:0 8px 24px #0006}}
+@media(min-width:900px){nav button{flex-direction:row;gap:10px}nav small{font-size:15px}#mp{left:200px!important;bottom:14px!important}}
+#mp{position:fixed;left:12px;right:12px;bottom:92px;background:var(--gold);color:#222;border-radius:18px;padding:8px 14px;display:none;align-items:center;gap:8px;z-index:8;box-shadow:0 6px 18px #0005}#mp span{flex:1;font-weight:600}#mp button{background:#0002;border:0;border-radius:50%;width:38px;height:38px;font-size:18px;margin:0}
+</style></head><body><main id="app">Loading…</main><nav id="nav"></nav><div id="toast"></div><div id="mp"></div>
+<script>
+const $=s=>document.querySelector(s),AD=n=>String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
+const toast=m=>{const t=$('#toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',3500)};
+/* ---------- IndexedDB key-value ---------- */
+const DB=new Promise((res,rej)=>{const r=indexedDB.open('hifz',1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});
+const kvGet=async k=>{const d=await DB;return new Promise(r=>{const q=d.transaction('kv').objectStore('kv').get(k);q.onsuccess=()=>r(q.result)})};
+const kvSet=async(k,v)=>{const d=await DB;return new Promise(r=>{const t=d.transaction('kv','readwrite');t.objectStore('kv').put(v,k);t.oncomplete=r})};
+/* ---------- state ---------- */
+let Q=[],SS=[],PG={},S,N=null,view='home',tab='home';
+const DEF=()=>({pos:0,log:[],xp:{self:0,ver:0},streak:0,last:'',bm:[],page:1,tests:[],weak:{},ver:{},prevDone:{},cur:null,lastBackup:Date.now(),pref:{target:5,size:34,rom:true,tl:true,qari:'yasser',rep:1,rate:1,theme:'light',lang:'ar-SA'}});
+const save=()=>kvSet('st',S);
+const today=()=>new Date().toLocaleDateString('en-CA');
+const addDays=(d,n)=>{const x=new Date(d+'T12:00');x.setDate(x.getDate()+n);return x.toLocaleDateString('en-CA')};
+const total=()=>S.xp.self+S.xp.ver,level=()=>Math.floor(Math.sqrt(total()/50))+1;
+function xp(kind,n){S.xp[kind]+=n;save()}
+/* ---------- data download (verified source) ---------- */
+async function download(){
+ $('#app').innerHTML='<div class=card>Downloading Quran text (Tanzil-derived Uthmani) …</div>';
+ try{const g=async id=>{const u='https://api.alquran.cloud/v1/quran/'+id;let err;
+  for(let k=0;k<3;k++){try{$('#app').innerHTML=`<div class=card>Downloading ${id} (try ${k+1}/3)…</div>`;const r=await fetch(u);if(!r.ok)throw Error('HTTP '+r.status);return (await r.json()).data.surahs}catch(e){err=e;await new Promise(r=>setTimeout(r,1500*(k+1)))}}
+  throw Error(`${id}: ${err.message}. Test this link in a new tab: ${u}`)};
+ const ar=await g('quran-uthmani'),tr=await g('en.transliteration'),en=await g('en.sahih');
+ const q=[],s=[];
+ ar.forEach((su,i)=>{s.push({n:su.number,ar:su.name,en:su.englishName,m:su.englishNameTranslation,c:su.ayahs.length});
+  su.ayahs.forEach((a,j)=>{let t=a.text;if(j==0&&su.number!=1&&su.number!=9)t=t.split(' ').slice(4).join(' '); /* API prefixes bismillah; shown as header instead */
+  q.push({n:a.number,s:su.number,a:a.numberInSurah,j:a.juz,p:a.page,ar:t,tr:tr[i].ayahs[j].text,en:en[i].ayahs[j].text})})});
+ if(q.length!=6236||s.length!=114)throw Error('Incomplete data: '+q.length+' ayahs');
+ await kvSet('quran',q);await kvSet('surahs',s);boot()}
+ catch(e){$('#app').innerHTML=`<div class=card>Download failed: ${e.message}<br><button class=b onclick=download()>Retry</button></div>`}}
+/* ---------- text compare ---------- */
+const norm=t=>t.normalize('NFKD').replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g,'').replace(/[أإآٱ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه').replace(/[^\u0621-\u064A ]/g,'').replace(/\s+/g,' ').trim();
+const lat=t=>t.toLowerCase().replace(/[^a-z' ]/g,'').split(/\s+/).filter(Boolean);
+function diff(a,b){const m=a.length,n=b.length,d=Array.from({length:m+1},()=>Array(n+1).fill(0));
+ for(let i=m-1;i>=0;i--)for(let j=n-1;j>=0;j--)d[i][j]=a[i]==b[j]?d[i+1][j+1]+1:Math.max(d[i+1][j],d[i][j+1]);
+ let i=0,j=0,o=[];while(i<m&&j<n){if(a[i]==b[j]){o.push(['ok',a[i]]);i++;j++}else if(d[i+1][j]>=d[i][j+1])o.push(['miss',a[i++]]);else o.push(['extra',b[j++]])}
+ while(i<m)o.push(['miss',a[i++]]);while(j<n)o.push(['extra',b[j++]]);return o}
+function ident(h){if(!N)N=Q.map(x=>norm(x.ar).split(' '));const w=h.split(' ');let b=-1,bs=0;
+ N.forEach((a,i)=>{const set=new Set(a);let c=0;w.forEach(x=>set.has(x)&&c++);const s=c/Math.max(w.length,a.length);if(s>bs){bs=s;b=i}});return bs>.5?b:-1}
+function listen(cb){const R=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!R)return toast('Speech recognition is not available in this browser. Use Safari or desktop Chrome, or self-report.');
+ const r=new R();r.lang=S.pref.lang;r.interimResults=false;r.onresult=e=>cb(e.results[0][0].transcript);
+ r.onerror=e=>toast('Microphone/recognition error: '+e.error+' (needs internet + mic permission)');r.start();toast('Listening…')}
+function showRes(idx,heard){const a=Q[idx],en=S.pref.lang.startsWith('en');
+ const ref=en?lat(a.tr):norm(a.ar).split(' '),h=en?lat(heard):norm(heard).split(' '),d=diff(ref,h),sc=d.filter(x=>x[0]=='ok').length/ref.length;
+ let id='';if(!en){const b=ident(h.join(' '));if(b>=0)id=`<p>Best match anywhere: Surah ${SS[Q[b].s-1].en} ${Q[b].s}:${Q[b].a}</p>`}
+ $('#res').innerHTML=`<p>Heard: <b>${heard}</b></p>${id}<p style="font-size:20px">${d.map(([k,w])=>`<span class=${k}>${w}</span>`).join(' ')}</p><p class=note><span class=ok>matched</span> · <span class=miss>missing</span> · <span class=extra>extra/repeated</span> — ${Math.round(sc*100)}% word match</p><div class=ar style="font-size:28px">${a.ar}</div><p class=note>This is speech-to-text word matching only. It does NOT assess Tajweed. Have a teacher verify.</p>`;
+ if(sc>=.9&&!en){S.ver[a.n]=1;save()}return sc}
+let lastSc=0;function recite(i){listen(t=>{lastSc=showRes(i,t)})}
+/* ---------- audio ---------- */
+const pad=n=>String(n).padStart(3,'0');
+const audioUrl=a=>S.pref.qari=='yasser'?`https://everyayah.com/data/Yasser_Ad-Dussary_128kbps/${pad(a.s)}${pad(a.a)}.mp3`:`https://cdn.islamic.network/quran/audio/128/${S.pref.qari}/${a.n}.mp3`;
+const mini=t=>{const m=$('#mp');if(!m)return;m.style.display=t?'flex':'none';if(t)m.innerHTML=`<span>🎧 ${t}</span><button onclick="au.paused?au.play():au.pause()">⏯</button><button onclick=skip()>⏭</button>`};
+const au=new Audio();let q=[],qi=0,rc=0;
+function play(list){q=list;qi=0;rc=0;go()}
+function go(){document.querySelectorAll('.ay').forEach(e=>e.classList.remove('on'));if(qi>=q.length){mini('');return $('#np')&&($('#np').textContent='Finished')}
+ const a=Q[q[qi]];au.src=audioUrl(a);au.playbackRate=S.pref.rate;
+ au.play().catch(e=>toast('Audio needs internet: '+e.message));const e=document.querySelector(`.ay[data-n="${a.n}"]`);e&&e.classList.add('on');
+ $('#np')&&($('#np').textContent=`Playing ${SS[a.s-1].en} ${a.s}:${a.a}`);mini(SS[a.s-1].en+' '+a.s+':'+a.a)}
+au.onended=()=>{rc++;if(S.pref.rep==0||rc<S.pref.rep)go();else{rc=0;qi++;go()}};
+au.onerror=()=>toast('Audio load nahi hua (internet check karo; ya Audio tab me dusra Qari chuno).');
+const playOne=i=>play([i]),skip=()=>{rc=0;qi++;go()};
+/* ---------- views ---------- */
+const TABS=[['home','🏠 Home'],['reader','📖 Quran'],['hifz','🧠 Hifz'],['rev','🔁 Revise'],['test','🎯 Test'],['audio','🎧 Audio'],['prog','📈 Progress'],['set','⚙️ Settings']];
+function go2(t){tab=t;render()}
+function render(){document.documentElement.classList.toggle('dark',S.pref.theme=='dark');
+ $('#nav').innerHTML=TABS.map(([k,l])=>`<button class="${k==tab?'on':''}" onclick="go2('${k}')"><span class=ic>${l.split(' ')[0]}</span><small>${l.split(' ').slice(1).join(' ')}</small></button>`).join('');
+ $('#app').innerHTML=`<div id=hd><b>﷽ Quran Hifz Master</b><span>Level ${level()} · ${total()} XP · 🔥 ${S.streak}</span></div>`+({home:vHome,reader:vReader,hifz:vHifz,rev:vRev,test:vTest,audio:vAudio,prog:vProg,set:vSet})[tab]()}
+const rng=(a,b)=>`${SS[Q[a].s-1].en} ${Q[a].s}:${Q[a].a} → ${Q[b-1].s}:${Q[b-1].a}`;
+function dueList(){const t=today();return S.log.slice(0,-1).filter(e=>e.next<=t)}
+function vHome(){const c=cur(),back=Date.now()-S.lastBackup>7*864e5,pct=Math.round(S.pos/62.36*10)/10;
+ return `${back?'<div class=card>⚠️ 7 din se backup nahi hua. <button class=b onclick="go2(\'set\')">Backup karo</button></div>':''}
+ <div class=hero><div class=ring style="--p:${pct}"><b>${pct}%</b></div><div><div style="font-size:13px;opacity:.8">Quran yaad</div><div style="font-size:26px;font-weight:700;color:var(--gold)">${S.pos} / 6236</div><div>Level ${level()} · ${total()} XP · 🔥 ${S.streak} din</div></div></div>
+ <div class=card><h3>Aaj ka kaam</h3>
+ <div class=task><span>🧠 Naya sabaq<br><small>${c.done?'✅ complete':rng(c.from,c.to)}</small></span><button class=b onclick="go2('hifz')">Kholo</button></div>
+ <div class=task><span>🔁 Purani revision<br><small>${dueList().length} baaki</small></span><button class=o onclick="go2('rev')">Kholo</button></div>
+ <div class=task><span>🎯 Random test<br><small>${S.pos?'yaad ki jaanch':'pehle sabaq complete karo'}</small></span>${S.pos?'<button class=o onclick="go2(\'test\')">Shuru</button>':''}</div>
+ <div class=task><span>📖 Quran padho<br><small>Page ${S.page}</small></span><button class=o onclick="go2('reader')">Kholo</button></div></div>`}
+/* Reader */
+let zoom=1;
+let jm=false,tx=0;
+function vReader(){const L=PG[S.page]||[],p=S.pref,bm=S.bm.includes(S.page);
+ const body=L.map(a=>{let h='';if(a.a==1)h+=`<div class=sh>${SS[a.s-1].ar} · ${SS[a.s-1].en}</div>`+(a.s!=1&&a.s!=9?'<div class="bs ar">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</div>':'');
+  return h+`<span class="ay ${a.n<=S.pos?'mem':''}" data-n=${a.n} onclick="playOne(${a.n-1})">${a.ar} <span class=mk>${AD(a.a)}</span></span> `}).join('');
+ const sub=L.map(a=>`<p class=note style="font-size:14px"><b>${a.s}:${a.a}</b> ${p.rom?`<i>${a.tr}</i> `:''}${p.tl?a.en:''}</p>`).join('');
+ const panel=jm?`<div class=card><select id=js onchange="gS(this.value)"><option>Surah…</option>${SS.map(s=>`<option value=${s.n}>${s.n}. ${s.en} — ${s.ar}</option>`).join('')}</select>
+ <select onchange="gJ(this.value)"><option>Para…</option>${[...Array(30)].map((_,i)=>`<option>${i+1}</option>`).join('')}</select>
+ <input id=ga placeholder="Ayah" style="width:70px" type=number><button class=b onclick="gA()">Go</button><br>
+ <input id=sq placeholder="Search Arabic / Roman / English"><button class=b onclick="srch()">Search</button><div id=sr></div>
+ ${S.bm.length?'<p>Bookmarks: '+S.bm.map(b=>`<button class=o onclick="S.page=${b};render()">${b}</button>`).join('')+'</p>':''}</div>`:'';
+ return `<div class=pgtop><span>Para ${L[0]?.j||''}</span><b>Page <span id=pn>${S.page}</span> / 604</b><span>${L[0]?SS[L[0].s-1].en:''}</span></div>
+ <div class=pgwrap><button class=arr onclick="pgGo(1)">‹</button>
+ <div class=pg id=pg style="font-size:${p.size*zoom}px" ontouchstart="tx=event.touches[0].clientX" ontouchend="sw(event)"><div class=ar>${body}</div></div>
+ <button class=arr onclick="pgGo(-1)">›</button></div>
+ <input type=range class=sl min=1 max=604 value=${S.page} oninput="$('#pn').textContent=this.value" onchange="S.page=+this.value;save();render()">
+ <div class=note>Green-tinted ayahs = tumhare yaad kiye hue. Swipe right ya ‹ = agla page.</div>
+ <div class=row><button class=g onclick="play(PG[S.page].map(a=>a.n-1))">▶ Page suno</button><span id=np class=note></span>
+ <button class=o onclick="open2(cur().from)">📍 Aaj ka sabaq</button><button class=o onclick="open2(Math.max(0,S.pos-1))">✅ Last yaad</button>
+ <button class=o onclick="bmk()">${bm?'★ Saved':'☆ Bookmark'}</button><button class=o onclick="jm=!jm;render()">🔎 Jump/Search</button></div>
+ <div class=row><button class=o onclick="zoom=Math.min(2,zoom+.1);render()">A+</button><button class=o onclick="zoom=Math.max(.6,zoom-.1);render()">A−</button>
+ <button class=o onclick="tg('rom')">Roman ${p.rom?'✓':''}</button><button class=o onclick="tg('tl')">Translation ${p.tl?'✓':''}</button>
+ <button class=o onclick="S.pref.theme=S.pref.theme=='dark'?'light':'dark';save();render()">🌙 Theme</button><button class=o onclick="document.documentElement.requestFullscreen?.()">⛶</button></div>
+ ${panel}<div class=card>${sub}</div>`}
+const sw=e=>{const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>60)pgGo(d>0?1:-1)};
+function pgGo(d){const n=S.page+d;if(n<1||n>604)return;S.page=n;save();render();$('#pg').classList.add('flip')}
+const open2=i=>{S.page=Q[i].p;save();go2('reader')};
+const tg=k=>{S.pref[k]=!S.pref[k];save();render()};
+const bmk=()=>{const i=S.bm.indexOf(S.page);i<0?S.bm.push(S.page):S.bm.splice(i,1);save();render()};
+const jump=i=>{S.page=Q[i].p;save();render()};
+const gS=v=>jump(Q.findIndex(x=>x.s==+v)),gJ=v=>jump(Q.findIndex(x=>x.j==+v)),gA=()=>{const s=$('#js').value,a=+$('#ga').value;const i=Q.findIndex(x=>x.s==+s&&x.a==a);i<0?toast('Choose a surah and a valid ayah'):jump(i)};
+function srch(){const t=$('#sq').value.trim().toLowerCase();if(!t)return;const na=norm(t);
+ const r=Q.map((x,i)=>[x,i]).filter(([x])=>(na&&norm(x.ar).includes(na))||x.tr.toLowerCase().includes(t)||x.en.toLowerCase().includes(t)).slice(0,20);
+ $('#sr').innerHTML=r.length?r.map(([x,i])=>`<p><button class=o onclick=jump(${i})>${x.s}:${x.a}</button> ${x.en.slice(0,90)}</p>`).join(''):'No match'}
+/* Hifz */
+function cur(){const t=today();if(!S.cur||S.cur.date!=t)S.cur={date:t,from:S.pos,to:Math.min(S.pos+S.pref.target,Q.length),done:false};return S.cur}
+let hid=false;
+function ayBlock(f,t,showTr){let h='';for(let i=f;i<t;i++){const a=Q[i];h+=`<div class="${hid?'hide':''}"><span class="ay ar" data-n=${a.n} style="font-size:${S.pref.size}px">${a.ar} <span class=mk>${AD(a.a)}</span></span> <button class=o onclick="recite(${i})">🎤</button><button class=o onclick="playOne(${i})">▶</button>${showTr?`<div class=note><i>${a.tr}</i><br>${a.en}</div>`:''}</div>`}return h}
+const SRok=!!(window.SpeechRecognition||window.webkitSpeechRecognition);
+function lev(a,b){const m=a.length,n=b.length,d=Array.from({length:m+1},(_,i)=>[i,...Array(n).fill(0)]);for(let j=1;j<=n;j++)d[0][j]=j;for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]==b[j-1]?0:1));return d[m][n]}
+let RR=null;
+function startRange(f,t){const R=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!R)return toast('Is browser me speech recognition nahi hai. Safari me site kholo.');
+ if(RR){RR.stop();return}
+ const r=new R();RR=r;r.lang=S.pref.lang;r.continuous=true;r.interimResults=true;let fin='';
+ r.onresult=e=>{let tmp='';for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)fin+=' '+e.results[i][0].transcript;else tmp+=e.results[i][0].transcript}$('#live').textContent='Sun raha hoon: '+fin+' '+tmp};
+ r.onerror=e=>toast('Mic error: '+e.error);
+ r.onend=()=>{RR=null;const m=$('#mic');m&&(m.textContent='🎤 Poora sabaq sunao');if(fin.trim())rangeRes(f,t,fin.trim());else toast('Kuch sunai nahi diya')};
+ try{r.start();$('#mic').textContent='⏹ Ruko, result dekho'}catch(e){RR=null;toast('Mic start nahi hua: '+e.message)}}
+function rangeRes(f,t,heard){const ref=[],own=[];for(let i=f;i<t;i++)norm(Q[i].ar).split(' ').forEach(w=>{ref.push(w);own.push(i)});
+ const h=norm(heard).split(' ').filter(Boolean),d=diff(ref,h),per={};let p=0;for(let i=f;i<t;i++)per[i]=[];
+ d.forEach(([k,w])=>{if(k=='extra')per[own[Math.min(p,ref.length-1)]].push({k,w});else{per[own[p]].push({k,w});p++}});
+ let html='';
+ for(let i=f;i<t;i++){const tk=[];per[i].forEach(x=>{const l=tk[tk.length-1];if(l&&((l.k=='miss'&&x.k=='extra')||(l.k=='extra'&&x.k=='miss'))&&lev(l.w,x.w)<=3){const m=l.k=='miss'?l.w:x.w,e=l.k=='miss'?x.w:l.w;tk[tk.length-1]={k:'sub',w:m,e}}else tk.push(x)});
+  const n=norm(Q[i].ar).split(' ').length,ok=tk.filter(x=>x.k=='ok').length,perfect=tk.every(x=>x.k=='ok');if(perfect)S.ver[Q[i].n]=1;
+  html+=`<div class=card><b>${Q[i].s}:${Q[i].a}</b> — ${perfect?'✅ sab shabd match':Math.round(ok/n*100)+'% match'}<div class=ar style="font-size:26px">${tk.map(x=>x.k=='sub'?`<span class=sub>${x.w}</span><small class=extra>(suna: ${x.e})</small>`:`<span class=${x.k}>${x.w}</span>`).join(' ')}</div><div class=ar style="font-size:${S.pref.size}px">${Q[i].ar}</div></div>`}
+ save();$('#res').innerHTML=`<p><b>Tumne padha:</b> ${heard}</p>${html}<p class=note><span class=ok>hara</span> = sahi · <span class=miss>kata hua</span> = chhoota · <span class=sub>laal</span> = badla hua shabd (bracket me jo suna gaya) · <span class=extra>peela</span> = extra/dohraya.<br>⚠️ Ye sirf speech-to-text se shabd milana hai. Arabic recognition kabhi galat bhi sun sakta hai, aur Tajweed ki jaanch nahi karta. Pakka karne ke liye ustaad se sunwao.</p>`}
+function vHifz(){const c=cur(),prev=S.log.length?S.log[S.log.length-1]:null,np=c.from==0||Q[c.from].j!=Q[c.from-1].j;
+ return `<div class=card style="background:linear-gradient(135deg,var(--em),var(--em2));color:#fff"><h3 style="color:var(--gold);margin:0">${np?'🌙 Naya Para '+Q[c.from].j+' shuru!':'Aaj ka Sabaq'}</h3>${rng(c.from,c.to)}${c.done?' · ✅ complete':''}</div>
+ ${SRok?'':'<div class=card>⚠️ Is browser (iPad Chrome) me mic se recognition support nahi. Safari me site kholo; Settings → General → Keyboard → Enable Dictation aur Arabic keyboard jodo.</div>'}
+ <div class=card>${ayBlock(c.from,c.to,S.pref.rom||S.pref.tl)}
+ <div class=row><button class=g onclick="play([...Array(${c.to-c.from})].map((_,i)=>${c.from}+i))">▶ Suno</button><button class=o onclick="hid=!hid;render()">${hid?'👁 Dikhao':'🙈 Chhupao'}</button><button class=o onclick=skip()>⏭</button><button class=o onclick="au.pause()">⏸</button><button class=o onclick="au.play()">▶</button><button class=o onclick="open2(${c.from})">📖 Page</button></div>
+ <div class=row><button class=b id=mic style="flex:1;font-size:18px;padding:14px" onclick="startRange(${c.from},${c.to})">🎤 Poora sabaq sunao</button></div><span id=np class=note></span>
+ <div id=live class=note></div><div id=res></div>
+ ${c.done?'':`<label><input type=checkbox id=tv style="width:auto"> Ustaad ne sunkar verify kiya</label><br><button class=b onclick=finish()>Sabaq complete karo</button><p class=note>Self-reported = 10 XP. Verified (ustaad ya har shabd mic se match) = 50 XP.</p>`}</div>
+ <div class=card><h3>Pichhla Sabaq</h3>${prev&&prev.date!=today()?`${rng(prev.from,prev.to)}<br>${S.prevDone[today()]?'✅ Revised':`<button class=b onclick="prevDone()">Dobara sunaya (+20 self-reported)</button> <button class=o onclick="play([...Array(${prev.to-prev.from})].map((_,i)=>${prev.from}+i))">▶</button> <button class=o onclick="open2(${prev.from})">📖 Page</button>`}`:'Abhi nahi — pehle sabaq complete karo.'}</div>`}
+function finish(){const c=cur(),v=$('#tv').checked||[...Array(c.to-c.from)].every((_,i)=>S.ver[Q[c.from+i].n]);
+ c.done=true;S.log.push({date:c.date,from:c.from,to:c.to,ver:v,step:0,next:addDays(c.date,1)});S.pos=c.to;
+ if(S.last!=c.date){S.streak=S.last==addDays(c.date,-1)?S.streak+1:1;S.last=c.date;if(S.streak%7==0){xp('self',100);toast('7-day streak! +100 XP')}}
+ xp(v?'ver':'self',v?50:10);const j=Q[c.to-1].j;if(c.to<Q.length&&Q[c.to].j!=j||c.to==Q.length)toast('🏅 Para '+j+' complete!');render()}
+function prevDone(){S.prevDone[today()]=1;xp('self',20);render()}
+/* Revision */
+function vRev(){const d=dueList(),weak=Object.keys(S.weak);
+ return `<h2>Old Revision</h2><div class=card>Schedule intervals: 1, 3, 7, 14, 30, 60 days.</div>${d.length?d.map((e,k)=>`<div class=card>${rng(e.from,e.to)} <span class=note>(${e.date})</span><br><button class=o onclick="play([...Array(${e.to-e.from})].map((_,i)=>${e.from}+i))">▶ Listen</button><button class=o onclick="open2(${e.from})">📖 Page</button><button class=b onclick="revDone(${S.log.indexOf(e)},1)">Recited — strong</button><button class=g onclick="revDone(${S.log.indexOf(e)},0)">Weak</button></div>`).join(''):'<div class=card>Nothing due today 🎉</div>'}
+ <div class=card><h3>Weak ayahs (${weak.length})</h3>${weak.slice(0,30).map(n=>`${Q[n-1].s}:${Q[n-1].a}`).join(', ')||'None'}</div>`}
+const IV=[1,3,7,14,30,60];
+function revDone(i,ok){const e=S.log[i];if(ok){e.step=Math.min(e.step+1,5);for(let k=e.from;k<e.to;k++)delete S.weak[Q[k].n]}else{e.step=0;for(let k=e.from;k<e.to;k++)S.weak[Q[k].n]=1}
+ e.next=addDays(today(),IV[e.step]);save();render()}
+/* Random test */
+let T=null;
+function vTest(){if(!S.pos)return '<h2>Random Test</h2><div class=card>Memorize something first.</div>';
+ if(!T)return `<h2>Random Test</h2><div class=card><button class=b onclick="newT()">Pick a random memorized ayah</button></div>`;
+ const a=Q[T];return `<h2>Random Test</h2><div class=card><p>Recite from memory: <b>Surah ${SS[a.s-1].en} ${a.s}:${a.a}</b></p><button class=b onclick="recite(${T})">🎤 Recite</button><button class=o onclick="$('#rv').style.display='block'">Reveal</button>
+ <div id=rv style="display:none"><div class=ar style="font-size:${S.pref.size}px">${a.ar}</div><button class=b onclick="tres(1)">I got it</button><button class=g onclick="tres(0)">I missed it</button></div><div id=res></div></div>`}
+const newT=()=>{T=Math.floor(Math.random()*S.pos);lastSc=0;render()};
+function tres(ok){const v=lastSc>=.9;S.tests.push({date:today(),n:Q[T].n,ok,ver:v&&ok});if(ok){xp(v?'ver':'self',15);toast(v?'+15 verified XP':'+15 self-reported XP')}else S.weak[Q[T].n]=1;T=null;save();render()}
+/* Audio */
+function vAudio(){return `<h2>Audio</h2><div class=card><p class=note>Yasser Al-Dosari ki awaaz everyayah.com se, baaki Qari islamic.network se stream hoti hai. Internet chahiye.</p>
+ <select onchange="S.pref.qari=this.value;save()">${[['yasser','Yasser Al-Dosari (ياسر الدوسري)'],['ar.alafasy','Mishary Alafasy'],['ar.husary','Mahmoud Khalil Al-Husary'],['ar.minshawi','Mohamed Siddiq El-Minshawi']].map(([v,n])=>`<option value=${v} ${S.pref.qari==v?'selected':''}>${n}</option>`).join('')}</select>
+ <select onchange="S.pref.rep=+this.value;save()">${[1,3,5,10,0].map(v=>`<option value=${v} ${S.pref.rep==v?'selected':''}>${v?v+'×':'Unlimited'}</option>`).join('')}</select>
+ <select onchange="S.pref.rate=+this.value;au.playbackRate=+this.value;save()">${[.75,1,1.25,1.5].map(v=>`<option ${S.pref.rate==v?'selected':''}>${v}</option>`).join('')}</select></div>
+ <div class=card><select id=as><option>Surah…</option>${SS.map(s=>`<option value=${s.n}>${s.n}. ${s.en}</option>`).join('')}</select><button class=b onclick="play(Q.filter(x=>x.s==+$('#as').value).map(x=>x.n-1))">▶ Surah</button><br>
+ <select id=aj>${[...Array(30)].map((_,i)=>`<option>${i+1}</option>`).join('')}</select><button class=b onclick="play(Q.filter(x=>x.j==+$('#aj').value).map(x=>x.n-1))">▶ Para</button><br>
+ <button class=o onclick="au.pause()">Pause</button><button class=o onclick="au.play()">Resume</button><button class=o onclick=skip()>Next ⏭</button> <span id=np class=note></span></div>`}
+/* Progress */
+function vProg(){const t=today(),since=n=>S.log.filter(e=>e.date>addDays(t,-n)).reduce((s,e)=>s+e.to-e.from,0);
+ const days=new Set(S.log.map(e=>e.date)),cal=[...Array(35)].map((_,i)=>addDays(t,i-34));
+ const paras=[...Array(30)].map((_,i)=>{const j=i+1,all=Q.filter(x=>x.j==j),m=all.filter(x=>x.n<=S.pos).length;return `<div>Para ${j}: ${Math.round(m/all.length*100)}%${m==all.length?' 🏅':''}<div class=bar><i style="width:${m/all.length*100}%"></i></div></div>`}).join('');
+ const bd=[[S.log.length>0,'First Sabaq'],[S.streak>=7,'7-day streak'],[total()>=500,'500 XP'],[S.tests.some(x=>x.ok),'First test passed'],[S.pos>=Q.filter(x=>x.j==1).length,'Para 1 complete']].map(([o,n])=>`<span class=card style="display:inline-block;opacity:${o?1:.35}">${o?'🏅':'🔒'} ${n}</span>`).join('');
+ return `<h2>Progress</h2><div class=card>Level ${level()} · XP ${total()}<br>Self-reported ${S.xp.self} · Verified ${S.xp.ver}<br>Memorized ${S.pos} ayahs · Last 7 days: ${since(7)} · Last 30 days: ${since(30)}<br>Tests passed: ${S.tests.filter(x=>x.ok).length}/${S.tests.length}</div><div class=card>${bd}</div><div class=card><div class=cal>${cal.map(d=>`<i class="${days.has(d)?'d':''}" title=${d}></i>`).join('')}</div></div><div class=card>${paras}</div>`}
+/* Settings */
+function vSet(){const p=S.pref;return `<h2>Settings</h2><div class=card>Daily ayahs <input type=number min=1 max=30 value=${p.target} onchange="S.pref.target=+this.value;S.cur=null;save()" style="width:70px"><br>
+ Arabic size <input type=range min=22 max=60 value=${p.size} onchange="S.pref.size=+this.value;save()"><br>
+ Microphone language <select onchange="S.pref.lang=this.value;save()"><option value=ar-SA ${p.lang=='ar-SA'?'selected':''}>Arabic (transcribe Arabic)</option><option value=en-US ${p.lang=='en-US'?'selected':''}>Roman English mode</option></select><br>
+ Theme <select onchange="S.pref.theme=this.value;save();render()"><option>light</option><option ${p.theme=='dark'?'selected':''}>dark</option></select></div>
+ <div class=card><h3>Backup</h3><button class=b onclick=exp()>Export backup</button> <input type=file accept=.json onchange=imp(this.files[0])>
+ <p class=note>Data lives in this browser's site storage. Clearing website data in Chrome, or removing the site, deletes it — export backups regularly. The Quran text can be re-downloaded; backups hold only your progress.</p></div>
+ <div class=card><button class=o onclick="kvSet('quran',null).then(()=>location.reload())">Re-download Quran database</button><p class=note>Not available: word-by-word transliteration and Roman Urdu (no verified dataset bundled).</p></div>`}
+function exp(){const b=new Blob([JSON.stringify(S)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='hifz-backup-'+today()+'.json';a.click();S.lastBackup=Date.now();save()}
+function imp(f){if(!f)return;f.text().then(t=>{try{const d=JSON.parse(t);if(d.pos===undefined||!d.pref)throw 0;S=Object.assign(DEF(),d);save();render();toast('Backup restored')}catch{toast('Invalid backup file')}})}
+/* boot */
+async function boot(){Q=await kvGet('quran')||[];SS=await kvGet('surahs')||[];S=Object.assign(DEF(),await kvGet('st')||{});
+ navigator.storage?.persist?.();if(!S.pref.yd){S.pref.yd=1;S.pref.qari='yasser';save()}
+ if(Q.length!=6236){$('#nav').innerHTML='';$('#app').innerHTML='<div class=card><h2>Welcome</h2>First run: download the full Quran (6,236 ayahs, Uthmani text, Madani page numbers) once. It is then stored on this device for offline use.<br><button class=b onclick=download()>Download Quran database</button></div>';return}
+ PG={};Q.forEach(a=>(PG[a.p]=PG[a.p]||[]).push(a));render()}
+if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
+boot();
+</script></body></html>
